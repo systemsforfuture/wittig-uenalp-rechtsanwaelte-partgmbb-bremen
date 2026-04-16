@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandanten-Portal — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy-dark:hsl(220 45% 9%);
+  --navy-mid:hsl(220 40% 13%);
+  --navy-light:hsl(220 35% 18%);
+  --gold:hsl(42 80% 55%);
+  --gold-light:hsl(42 80% 65%);
+  --gold-dim:hsl(42 60% 45%);
+  --text:#e8e8e8;
+  --text-muted:#9aa3b4;
+  --border:rgba(255,255,255,0.08);
+  --glass:rgba(255,255,255,0.04);
+}
+html,body{height:100%;font-family:'Inter',sans-serif}
+body{background:var(--navy-dark);color:var(--text);display:flex;min-height:100vh}
+
+/* ── LEFT PANEL ── */
+.left-panel{
+  width:45%;
+  background:linear-gradient(160deg,var(--navy-mid) 0%,hsl(220 45% 11%) 100%);
+  padding:60px 56px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  border-right:1px solid var(--border);
+}
+.left-panel::before{
+  content:'';
+  position:absolute;
+  top:-120px;right:-120px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,hsl(42 80% 55% / .12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.left-panel::after{
+  content:'';
+  position:absolute;
+  bottom:-80px;left:-80px;
+  width:350px;height:350px;
+  background:radial-gradient(circle,hsl(220 60% 50% / .08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.logo-mark{
+  width:52px;height:52px;
+  border:2px solid var(--gold);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:56px;
+  position:relative;z-index:1;
+}
+.logo-mark svg{width:28px;height:28px;color:var(--gold)}
+.left-heading{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,3vw,2.8rem);
+  line-height:1.2;
+  margin-bottom:16px;
+  position:relative;z-index:1;
+}
+.left-heading .gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.left-subtitle{
+  color:var(--text-muted);
+  font-size:.95rem;
+  line-height:1.6;
+  margin-bottom:48px;
+  position:relative;z-index:1;
+}
+.features{list-style:none;position:relative;z-index:1}
+.features li{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  font-size:.88rem;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+.features li:last-child{border-bottom:none}
+.feat-icon{
+  width:32px;height:32px;min-width:32px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;
+  margin-top:1px;
+}
+.feat-text strong{display:block;color:var(--text);font-weight:600;margin-bottom:2px;font-size:.87rem}
+
+/* ── RIGHT PANEL ── */
+.right-panel{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:48px 32px;
+}
+.login-box{
+  width:100%;
+  max-width:420px;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--text-muted);
+  font-size:.82rem;
+  text-decoration:none;
+  margin-bottom:40px;
+  transition:color .2s;
+}
+.back-link:hover{color:var(--gold)}
+.back-link svg{width:14px;height:14px}
+.login-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.login-subtitle{
+  color:var(--text-muted);
+  font-size:.87rem;
+  margin-bottom:32px;
+}
+/* Role toggle */
+.role-toggle{
+  display:flex;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:4px;
+  margin-bottom:28px;
+}
+.role-btn{
+  flex:1;
+  padding:10px 16px;
+  border:none;
+  background:transparent;
+  color:var(--text-muted);
+  font-family:'Inter',sans-serif;
+  font-size:.85rem;
+  font-weight:500;
+  cursor:pointer;
+  border-radius:7px;
+  transition:all .2s;
+}
+.role-btn.active{
+  background:var(--gold);
+  color:var(--navy-dark);
+  font-weight:700;
+}
+/* Form */
+.form-group{margin-bottom:18px}
+label{
+  display:block;
+  font-size:.8rem;
+  font-weight:600;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:8px;
+}
+.input-wrap{position:relative}
+input[type="email"],input[type="password"],input[type="text"]{
+  width:100%;
+  padding:13px 16px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:.93rem;
+  outline:none;
+  transition:border-color .2s,background .2s;
+}
+input[type="email"]:focus,input[type="password"]:focus,input[type="text"]:focus{
+  border-color:var(--gold);
+  background:rgba(255,255,255,0.06);
+}
+input::placeholder{color:hsl(220 20% 50%)}
+.pw-toggle{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;
+  color:var(--text-muted);padding:4px;
+  transition:color .2s;
+}
+.pw-toggle:hover{color:var(--gold)}
+.pw-toggle svg{width:16px;height:16px;display:block}
+/* Options row */
+.form-options{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+  font-size:.82rem;
+}
+.remember{
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;
+  color:var(--text-muted);
+}
+.remember input[type="checkbox"]{
+  width:16px;height:16px;
+  accent-color:var(--gold);
+  cursor:pointer;
+}
+.forgot-link{
+  color:var(--text-muted);
+  text-decoration:none;
+  font-size:.82rem;
+  transition:color .2s;
+}
+.forgot-link:hover{color:var(--gold)}
+/* Submit */
+.btn-login{
+  width:100%;
+  padding:14px;
+  background:var(--gold);
+  color:var(--navy-dark);
+  border:none;
+  border-radius:10px;
+  font-family:'Inter',sans-serif;
+  font-size:.93rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .2s,transform .1s;
+  letter-spacing:.02em;
+}
+.btn-login:hover{background:var(--gold-light)}
+.btn-login:active{transform:scale(.99)}
+/* Info note */
+.demo-note{
+  margin-top:28px;
+  padding:14px 16px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:.78rem;
+  color:var(--text-muted);
+  line-height:1.5;
+  text-align:center;
+}
+.demo-note strong{color:var(--gold)}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  body{flex-direction:column}
+  .left-panel{
+    width:100%;
+    padding:40px 28px 32px;
+    min-height:auto;
+  }
+  .logo-mark{margin-bottom:24px}
+  .left-heading{font-size:1.6rem;margin-bottom:10px}
+  .features{display:none}
+  .right-panel{padding:32px 20px 48px}
+  .login-box{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2L3 7l9 5 9-5-9-5zM3 17l9 5 9-5M3 12l9 5 9-5"/>
+    </svg>
+  </div>
+
+  <h1 class="left-heading">
+    Willkommen im<br>
+    <span class="gold">Mandanten-Portal</span>
+  </h1>
+  <p class="left-subtitle">Sicherer Zugang zu Ihren Rechtsdokumenten, Fallstatus und direkter Kommunikation mit unserer Kanzlei.</p>
+
+  <ul class="features">
+    <li>
+      <span class="feat-icon">🔒</span>
+      <span class="feat-text">
+        <strong>Verschlüsselte Kommunikation</strong>
+        Alle Dokumente und Nachrichten werden Ende-zu-Ende verschlüsselt übertragen.
+      </span>
+    </li>
+    <li>
+      <span class="feat-icon">📁</span>
+      <span class="feat-text">
+        <strong>Digitale Akte</strong>
+        Greifen Sie jederzeit auf Ihre vollständige Fallakte und alle Dokumente zu.
+      </span>
+    </li>
+    <li>
+      <span class="feat-icon">💬</span>
+      <span class="feat-text">
+        <strong>Direkte Kommunikation</strong>
+        Senden Sie Nachrichten direkt an Ihren Anwalt — sicher und dokumentiert.
+      </span>
+    </li>
+  </ul>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+  <div class="login-box">
+    <a href="index.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Zurück zur Website
+    </a>
+
+    <h2 class="login-title">Anmelden</h2>
+    <p class="login-subtitle">Wählen Sie Ihren Zugangsbereich</p>
+
+    <!-- Role Toggle -->
+    <div class="role-toggle">
+      <button class="role-btn active" id="btnMandant" onclick="setRole('mandant')">Mandant</button>
+      <button class="role-btn" id="btnMitarbeiter" onclick="setRole('mitarbeiter')">Mitarbeiter</button>
+    </div>
+
+    <!-- Login Form -->
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>E-Mail-Adresse</label>
+        <input type="email" id="email" placeholder="ihre@email.de" required>
+      </div>
+      <div class="form-group">
+        <label>Passwort</label>
+        <div class="input-wrap">
+          <input type="password" id="password" placeholder="••••••••" required>
+          <button type="button" class="pw-toggle" onclick="togglePw()" title="Passwort anzeigen">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-options">
+        <label class="remember">
+          <input type="checkbox" id="remember">
+          Angemeldet bleiben
+        </label>
+        <a href="#" class="forgot-link">Passwort vergessen?</a>
+      </div>
+      <button type="submit" class="btn-login">Sicher anmelden</button>
+    </form>
+
+    <div class="demo-note"><strong>Demo-Version</strong><br><span style="font-size:.81rem;opacity:.85;display:block;margin-top:5px;line-height:1.5">Diese Landing Page ist kein Ersatz fuer Ihre Website &mdash; sie ist ein <strong style="color:var(--gold)">zusaetzlicher Akquise-Kanal</strong> fuer Werbung (Google Ads, Meta Ads). Neue Mandanten landen hier, werden ueberzeugt und kontaktieren die Kanzlei. Das vollstaendige Portal wird nach Beauftragung eingerichtet.</span></div>
+  </div>
+</div>
+
+<script>
+function setRole(role){
+  document.getElementById('btnMandant').classList.toggle('active', role==='mandant');
+  document.getElementById('btnMitarbeiter').classList.toggle('active', role==='mitarbeiter');
+}
+let pwVisible = false;
+function togglePw(){
+  pwVisible = !pwVisible;
+  const inp = document.getElementById('password');
+  inp.type = pwVisible ? 'text' : 'password';
+  document.getElementById('eyeIcon').innerHTML = pwVisible
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+}
+function handleLogin(e){
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-login');
+  btn.textContent = 'Wird geprüft...';
+  btn.disabled = true;
+  setTimeout(()=>{
+    btn.textContent = 'Sicher anmelden';
+    btn.disabled = false;
+    alert('Demo-Modus: In der vollständigen Version werden Sie hier angemeldet.');
+  }, 1200);
+}
+</script>
+</body>
+</html>
